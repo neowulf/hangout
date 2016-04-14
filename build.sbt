@@ -1,4 +1,4 @@
-name := """playing-reactjs"""
+name := """lg-hangout"""
 
 version := "1.0-SNAPSHOT"
 
