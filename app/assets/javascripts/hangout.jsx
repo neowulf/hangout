@@ -1,4 +1,10 @@
 var easyrtc_url = "52.10.221.200:8080";
+//https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/
+var myIceServers = [
+    {"url": "stun:stun.l.google.com:19302"},
+    {"url": "turn:52.10.221.200:3478"},
+    {"url": "turn:52.10.221.200:3478?transport=tcp"}
+];
 
 var AvatarBpm = React.createClass({
     getInitialState: function () {
@@ -32,6 +38,7 @@ var Avatar = React.createClass({
         function getRandomArbitrary(min, max) {
             return Math.floor(Math.random() * (max - min) + min);
         }
+
         try {
             var currentBPM = getRandomArbitrary(90, 200);
             var stringToSend = this.props.avatarid + "-" + (currentBPM);
@@ -49,12 +56,12 @@ var Avatar = React.createClass({
         // The random BPMs can't be sent to itself via the rtc mechanism. So,
         //   that data will be simulated from the other players.
         //if (this.props.myself === true) {
-            this.interval = setInterval(this.broadcastBPM, 1000);
+        this.interval = setInterval(this.broadcastBPM, 1000);
         //}
     },
     componentWillUnmount: function () {
         //if (this.props.myself === true) {
-            clearInterval(this.interval);
+        clearInterval(this.interval);
         //}
     },
     render: function () {
@@ -146,18 +153,21 @@ var HangoutRoom = React.createClass({
 
             this.setState({avatar_bpms: {"avatar_id": _avatar_id, "avatar_bpm": _avatar_bpm}});
         },
-        onCallListener: function(easyrtcid, slot) {
-            console.log("call getConnection count="  + easyrtc.getConnectionCount() + " for slot: " + slot );
+        onCallListener: function (easyrtcid, slot) {
+            console.log("call getConnection count=" + easyrtc.getConnectionCount() + " for slot: " + slot);
             document.getElementById("avatarbox" + (slot + 1)).style.visibility = "visible";
         },
-        onHangupListener: function(easyrtcid, slot) {
-            console.log("hangup getConnection count="  + easyrtc.getConnectionCount() + " for slot: " + slot );
+        onHangupListener: function (easyrtcid, slot) {
+            console.log("hangup getConnection count=" + easyrtc.getConnectionCount() + " for slot: " + slot);
             document.getElementById("avatarbox" + (slot + 1)).style.visibility = "hidden";
         },
         componentDidMount: function () {
 
             easyrtc.setRoomOccupantListener(this.callEverybodyElse);
             easyrtc.setSocketUrl(easyrtc_url);
+            // https://github.com/priologic/easyrtc/blob/master/docs/easyrtc_server_ice.md
+            easyrtc.setOption("appIceServers", myIceServers);
+
             easyrtc.easyApp("easyrtc.multiparty", "box0", ["box1", "box2", "box3"], this.loginSuccess);
 
             easyrtc.setPeerListener(this.messageListener);
@@ -169,7 +179,7 @@ var HangoutRoom = React.createClass({
             var that = this;
             var avatarNodes = this.props.data.map(function (avatar) {
                 var avatarboxStyle = {
-                    "visibility" : avatar.myself ? "visible" : "hidden"
+                    "visibility": avatar.myself ? "visible" : "hidden"
                 };
                 return (
                     <div id={"avatarbox" + avatar.id} className="row tile center-block avatarblock" style={avatarboxStyle}>
