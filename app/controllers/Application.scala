@@ -32,11 +32,11 @@ class Application extends Controller {
   }
 
   def hangout = Action {
-    Ok(views.html.hangout("Hangouts are ready!"))
+    Ok(views.html.demo_hangout("Hangouts are ready!"))
   }
 
   def single = Action {
-    Ok(views.html.single("Single Hangout is ready!"))
+    Ok(views.html.demo_single("Single Hangout is ready!"))
   }
 
   /**

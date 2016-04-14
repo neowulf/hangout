@@ -3,27 +3,29 @@
 # ~~~~
 
 # Home page
-GET    /                       controllers.Application.index
+GET         /                            controllers.Application.index
 
-GET    /dashboard              controllers.Application.dashboard
+GET         /dashboard                   controllers.Application.dashboard
 
-GET    /hangout                controllers.Application.hangout
-GET    /single                controllers.Application.single
+GET         /demo/hangout                controllers.Application.hangout
+GET         /demo/single                 controllers.Application.single
+
+GET         /hangout                     controllers.Hangout.index
 
 # Employees list (look at the default values for pagination parameters)
-GET    /employees              controllers.Application.list
+GET         /employees                   controllers.Application.list
 
 # Add employee
-POST   /employees/save         controllers.Application.save
+POST        /employees/save              controllers.Application.save
 
 # Edit existing employee
-GET    /employees/:id          controllers.Application.edit(id:Long)
-POST   /employees/:id          controllers.Application.update(id:Long)
+GET         /employees/:id               controllers.Application.edit(id:Long)
+POST        /employees/:id               controllers.Application.update(id:Long)
 
 # Delete a computer
-POST   /employees/:id/delete   controllers.Application.delete(id:Long)
+POST        /employees/:id/delete        controllers.Application.delete(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path
-GET    /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file                controllers.Assets.versioned(path="/public", file: Asset)
 
-GET    /webjars/*file          controllers.WebJarAssets.at(file)
+GET         /webjars/*file               controllers.WebJarAssets.at(file)
