@@ -140,12 +140,19 @@ var HangoutRoom = React.createClass({
             return {avatar_bpms: {avatar_id: -1, avatar_bpm: -1}};
         },
         messageListener: function (easyrtcid, msgType, content, targeting) {
-            console.log("From " + easyrtc.idToName(easyrtcid) +
-                " sent the following data " + content);
+            // console.log("From " + easyrtc.idToName(easyrtcid) + " sent the following data " + content);
             var _avatar_id = content.split('-')[0];
             var _avatar_bpm = content.split('-')[1];
 
             this.setState({avatar_bpms: {"avatar_id": _avatar_id, "avatar_bpm": _avatar_bpm}});
+        },
+        onCallListener: function(easyrtcid, slot) {
+            console.log("call getConnection count="  + easyrtc.getConnectionCount() + " for slot: " + slot );
+            document.getElementById("avatarbox" + (slot + 1)).style.visibility = "visible";
+        },
+        onHangupListener: function(easyrtcid, slot) {
+            console.log("hangup getConnection count="  + easyrtc.getConnectionCount() + " for slot: " + slot );
+            document.getElementById("avatarbox" + (slot + 1)).style.visibility = "hidden";
         },
         componentDidMount: function () {
 
@@ -154,13 +161,18 @@ var HangoutRoom = React.createClass({
             easyrtc.easyApp("easyrtc.multiparty", "box0", ["box1", "box2", "box3"], this.loginSuccess);
 
             easyrtc.setPeerListener(this.messageListener);
+            easyrtc.setOnCall(this.onCallListener);
+            easyrtc.setOnHangup(this.onHangupListener);
         }
         ,
         render: function () {
             var that = this;
             var avatarNodes = this.props.data.map(function (avatar) {
+                var avatarboxStyle = {
+                    "visibility" : avatar.myself ? "visible" : "hidden"
+                };
                 return (
-                    <div className="row tile center-block avatarblock">
+                    <div id={"avatarbox" + avatar.id} className="row tile center-block avatarblock" style={avatarboxStyle}>
                         <Avatar avatarid={avatar.id} myself={avatar.myself}/>
                         <AvatarBpm avatarid={avatar.id} avatar_bpms={that.state.avatar_bpms}/>
                         <br/>
