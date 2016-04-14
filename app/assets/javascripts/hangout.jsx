@@ -13,14 +13,12 @@ var AvatarBpm = React.createClass({
 
         if (this.props.avatarid == this.props.avatar_bpms.avatar_id) {
             this.state.bpm = this.props.avatar_bpms.avatar_bpm;
-            if (this.state.bpm > 175) {
+            if (this.state.bpm > 190) {
                 this.state.classStyle = "btn-danger";
-            } else if (this.state.bpm > 125) {
-                this.state.classStyle = "btn-warning";
             } else if (this.state.bpm > 100) {
-                this.state.classStyle = "btn-primary";
+                this.state.classStyle = "btn-warning";
             } else {
-                this.state.classStyle = "btn-default";
+                this.state.classStyle = "btn-primary";
             }
         }
         return (
