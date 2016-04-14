@@ -1,3 +1,5 @@
+var easyrtc_url = "52.10.221.200:8080";
+
 var AvatarBpm = React.createClass({
     getInitialState: function () {
         return {bpm: 80, classStyle: "btn-default"};
@@ -157,7 +159,7 @@ var HangoutRoom = React.createClass({
         componentDidMount: function () {
 
             easyrtc.setRoomOccupantListener(this.callEverybodyElse);
-            easyrtc.setSocketUrl("192.168.1.82:8080");
+            easyrtc.setSocketUrl(easyrtc_url);
             easyrtc.easyApp("easyrtc.multiparty", "box0", ["box1", "box2", "box3"], this.loginSuccess);
 
             easyrtc.setPeerListener(this.messageListener);
