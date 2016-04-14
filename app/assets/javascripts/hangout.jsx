@@ -1,6 +1,6 @@
 var AvatarBpm = React.createClass({
     getInitialState: function () {
-        return {bpm: -2};
+        return {bpm: 80, classStyle: "btn-default"};
     },
     render: function () {
         var divstyle = {
@@ -11,21 +11,30 @@ var AvatarBpm = React.createClass({
 
         if (this.props.avatarid == this.props.avatar_bpms.avatar_id) {
             this.state.bpm = this.props.avatar_bpms.avatar_bpm;
+            if (this.state.bpm > 175) {
+                this.state.classStyle = "btn-danger";
+            } else if (this.state.bpm > 125) {
+                this.state.classStyle = "btn-warning";
+            } else if (this.state.bpm > 100) {
+                this.state.classStyle = "btn-primary";
+            } else {
+                this.state.classStyle = "btn-default";
+            }
         }
         return (
-            <div className="bg-success" style={divstyle}>{this.state.bpm} BPM</div>
+            <div className={this.state.classStyle} style={divstyle}>{this.state.bpm} BPM</div>
         )
     }
 });
 
 var Avatar = React.createClass({
-    getInitialState: function () {
-        return {secondsElapsed: 0};
-    },
-    tick: function () {
+    broadcastBPM: function () {
+        function getRandomArbitrary(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
         try {
-            this.state.secondsElapsed = this.state.secondsElapsed + 1;
-            var stringToSend = this.props.avatarid + "-" + (this.state.secondsElapsed + 1);
+            var currentBPM = getRandomArbitrary(90, 200);
+            var stringToSend = this.props.avatarid + "-" + (currentBPM);
             for (var i = 0; i < maxCALLERS; i++) {
                 var easyrtcid = easyrtc.getIthCaller(i);
                 if (easyrtcid && easyrtcid != "") {
@@ -37,10 +46,16 @@ var Avatar = React.createClass({
         }
     },
     componentDidMount: function () {
-        this.interval = setInterval(this.tick, 1000);
+        // The random BPMs can't be sent to itself via the rtc mechanism. So,
+        //   that data will be simulated from the other players.
+        //if (this.props.myself === true) {
+            this.interval = setInterval(this.broadcastBPM, 1000);
+        //}
     },
     componentWillUnmount: function () {
-        clearInterval(this.interval);
+        //if (this.props.myself === true) {
+            clearInterval(this.interval);
+        //}
     },
     render: function () {
 
@@ -64,14 +79,14 @@ var Avatar = React.createClass({
         if (this.props.myself === true) {
             return (
                 <div>
-                    <div className = "row" style={avatarNameStyle}>Self</div>
+                    <div className="row" style={avatarNameStyle}>Self</div>
                     <video id={"box" + this.props.avatarid} muted="muted" volume="0" style={selfStyle}/>
                 </div>
             )
         } else {
             return (
                 <div>
-                    <div className = "row" style={avatarNameStyle}>Friend-{this.props.avatarid}</div>
+                    <div className="row" style={avatarNameStyle}>Friend-{this.props.avatarid}</div>
                     <video id={"box" + this.props.avatarid} style={divStyle}/>
                 </div>
             )
