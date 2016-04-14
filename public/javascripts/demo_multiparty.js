@@ -692,6 +692,8 @@ function appInit() {
     easyrtc.setRoomOccupantListener(callEverybodyElse);
     easyrtc.setSocketUrl(":8080");
     easyrtc.easyApp("easyrtc.multiparty", "box0", ["box1", "box2", "box3"], loginSuccess);
+    
+    // Handles messages from peers
     easyrtc.setPeerListener(messageListener);
     easyrtc.setDisconnectListener( function() {
         easyrtc.showError("LOST-CONNECTION", "Lost connection to signaling server");
