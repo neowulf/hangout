@@ -31,6 +31,14 @@ class Application extends Controller {
     Ok(views.html.dashboard("Your new application is ready."))
   }
 
+  def hangout = Action {
+    Ok(views.html.hangout("Hangouts are ready!"))
+  }
+
+  def single = Action {
+    Ok(views.html.single("Single Hangout is ready!"))
+  }
+
   /**
    * Describe the employee form (used in both edit and create screens).
    */

@@ -7,6 +7,9 @@ GET    /                       controllers.Application.index
 
 GET    /dashboard              controllers.Application.dashboard
 
+GET    /hangout                controllers.Application.hangout
+GET    /single                controllers.Application.single
+
 # Employees list (look at the default values for pagination parameters)
 GET    /employees              controllers.Application.list
 

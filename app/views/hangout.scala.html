@@ -1,0 +1,29 @@
+@* dashboard Template File *@
+@(param: Any)
+
+@main("Hangout") {
+
+    <div id="mainbody">
+        <div id="fullpage"  class="boxCommon" style="background-image:url(assets/images/irongrip.png)">
+            <video id="box0" class="transit boxCommon thumbCommon easyrtcMirror" muted="muted" volume="0" ></video>
+            <video id="box1" class="transit boxCommon thumbCommon" style="visibility:hidden"></video>
+            <video id="box2" class="transit boxCommon thumbCommon" style="visibility:hidden"></video>
+            <video id="box3" class="transit boxCommon thumbCommon" style="visibility:hidden"></video>
+            <div id="textentryBox" onsubmit="sendText()" style="display:none" >
+                <input type="text" id="textentryField"  class="transit boxcommon" /><br>
+                <button id="textentrySubmit" style="float:right;margin-right:1em" onclick="sendText()">Send</button>
+                <button id="textentryCancel" style="float:left;margin-left:1em" onclick="cancelText()">Cancel</button>
+            </div>
+
+            <img id="killButton" class="transit boxCommon" onclick="killActiveBox()" src="assets/images/button_close.png" style="display:none;z-index:3" alt="close button" />
+            <img id="muteButton" class="transit boxCommon" onclick ="muteActiveBox()" src="assets/images/button_mute.png" style="display:none;z-index:3" alt="mute button" />
+            <img id="textEntryButton" class="transit boxCommon" onclick ="showTextEntry()" src="assets/images/textEntry.png" style="z-index:3;display:none" alt="text button" />
+        </div>
+    </div>
+
+    <script type='text/javascript' src='@routes.Assets.versioned("javascripts/demo_multiparty.js")'></script>
+
+    <script type="text/javascript">
+            appInit().swap('mainbody');
+    </script>
+}
