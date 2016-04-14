@@ -3,11 +3,16 @@ var AvatarBpm = React.createClass({
         return {bpm: -2};
     },
     render: function () {
+        var divstyle = {
+            "font-size": "17px",
+            "padding": "10px"
+        };
+
         if (this.props.avatarid == this.props.avatar_bpms.avatar_id) {
             this.state.bpm = this.props.avatar_bpms.avatar_bpm;
         }
         return (
-            <div>BPM: {this.state.bpm} </div>
+            <div className="bg-success" style={divstyle}>{this.state.bpm} BPM</div>
         )
     }
 });
@@ -37,18 +42,35 @@ var Avatar = React.createClass({
         clearInterval(this.interval);
     },
     render: function () {
+
+        var divStyle = {
+            width: "354px",
+            height: "281px"
+        };
+
+        var mirrorDivStyle = {
+            transform: "scaleX(-1)"
+        };
+
+        var selfStyle = $.extend({}, divStyle, mirrorDivStyle);
+
+        var avatarNameStyle = {
+            "font-size": "17px",
+            color: "green"
+        };
+
         if (this.props.myself === true) {
             return (
-                <div>Self
-                    <video id={"box" + this.props.avatarid} class="transit boxCommon thumbCommon easyrtcMirror"
-                           muted="muted" volume="0"></video>
+                <div>
+                    <div style={avatarNameStyle}>Self</div>
+                    <video id={"box" + this.props.avatarid} muted="muted" volume="0" style={selfStyle}/>
                 </div>
             )
         } else {
             return (
-                <div>Friend-{this.props.avatarid}
-                    <video id={"box" + this.props.avatarid} class="transit boxCommon thumbCommon"
-                    ></video>
+                <div>
+                    <div style={avatarNameStyle}>Friend-{this.props.avatarid}</div>
+                    <video id={"box" + this.props.avatarid} style={divStyle}/>
                 </div>
             )
         }
@@ -105,7 +127,7 @@ var HangoutRoom = React.createClass({
                 " sent the following data " + content);
             var _avatar_id = content.split('-')[0];
             var _avatar_bpm = content.split('-')[1];
-            
+
             this.setState({avatar_bpms: {"avatar_id": _avatar_id, "avatar_bpm": _avatar_bpm}});
         },
         componentDidMount: function () {
@@ -121,9 +143,10 @@ var HangoutRoom = React.createClass({
             var that = this;
             var avatarNodes = this.props.data.map(function (avatar) {
                 return (
-                    <div>
+                    <div className="row tile center-block avatarblock">
                         <Avatar avatarid={avatar.id} myself={avatar.myself}/>
                         <AvatarBpm avatarid={avatar.id} avatar_bpms={that.state.avatar_bpms}/>
+                        <br/>
                     </div>
                 )
             });
