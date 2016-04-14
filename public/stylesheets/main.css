@@ -1,8 +1,5 @@
 .avatarblock {
     width: 400px;
-}
-
-.video {
-    position: absolute;
-    right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }

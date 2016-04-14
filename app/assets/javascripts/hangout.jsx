@@ -5,7 +5,8 @@ var AvatarBpm = React.createClass({
     render: function () {
         var divstyle = {
             "font-size": "17px",
-            "padding": "10px"
+            "padding": "10px",
+            "margin-top": "10px"
         };
 
         if (this.props.avatarid == this.props.avatar_bpms.avatar_id) {
@@ -56,20 +57,21 @@ var Avatar = React.createClass({
 
         var avatarNameStyle = {
             "font-size": "17px",
-            color: "green"
+            color: "green",
+            "margin-top": "10px"
         };
 
         if (this.props.myself === true) {
             return (
                 <div>
-                    <div style={avatarNameStyle}>Self</div>
+                    <div className = "row" style={avatarNameStyle}>Self</div>
                     <video id={"box" + this.props.avatarid} muted="muted" volume="0" style={selfStyle}/>
                 </div>
             )
         } else {
             return (
                 <div>
-                    <div style={avatarNameStyle}>Friend-{this.props.avatarid}</div>
+                    <div className = "row" style={avatarNameStyle}>Friend-{this.props.avatarid}</div>
                     <video id={"box" + this.props.avatarid} style={divStyle}/>
                 </div>
             )
